@@ -7,7 +7,6 @@ function fixture() {
     ['build-info.json', Buffer.from('{}')],
     ['manifest.webmanifest', Buffer.from('{}')],
     ['sw.js', Buffer.from('// fixture')],
-    ['.nojekyll', Buffer.alloc(0)],
   ]);
   const manifest = { schemaVersion: 1, build: { commit: 'test-source' }, files: [...contents].map(([path, bytes]) => ({ path, bytes: bytes.length, sha256: sha256(bytes) })) };
   const bytes = Buffer.from(JSON.stringify(manifest));

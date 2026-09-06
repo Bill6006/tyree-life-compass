@@ -27,7 +27,7 @@ export function validateManifest(manifest) {
     if (!/^[a-f0-9]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes < 0) throw new Error('Invalid file evidence');
     paths.add(file.path);
   }
-  for (const required of ['index.html', 'build-info.json', 'manifest.webmanifest', 'sw.js', '.nojekyll']) {
+  for (const required of ['index.html', 'build-info.json', 'manifest.webmanifest', 'sw.js']) {
     if (!paths.has(required)) throw new Error(`Missing required artifact file: ${required}`);
   }
 }

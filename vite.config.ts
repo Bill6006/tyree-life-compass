@@ -1,17 +1,11 @@
-import { execFileSync } from 'node:child_process';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-function sourceCommit() {
-  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA;
-  try { return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); }
-  catch { return 'local-development'; }
-}
-
 export default defineConfig(({ command }) => {
   const buildInfo = {
-    commit: sourceCommit(),
+    // Only CI builds identify a commit; local previews can contain uncommitted changes.
+    commit: process.env.GITHUB_SHA ?? 'local-development',
     builtAt: new Date().toISOString(),
     runUrl: process.env.GITHUB_RUN_ID
       ? `https://github.com/Bill6006/tyree-life-compass/actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.env.GITHUB_RUN_ATTEMPT ?? '1'}`
