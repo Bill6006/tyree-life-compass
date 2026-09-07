@@ -104,7 +104,9 @@ test('skipping everything creates no score or observation and can be discarded w
   await expect(page.getByRole('heading', { name: 'Not logged yet' })).toBeVisible();
   await page.getByRole('button', { name: 'Discard draft', exact: true }).click();
   await page.getByRole('button', { name: 'Discard unfinished answers', exact: true }).click();
+  await expect(page.getByText('Draft discarded. Saved readings are unchanged.', { exact: true })).toBeVisible();
   await page.reload();
+  await expect(page.getByRole('button', { name: /^Start .* check-in$/ })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Resume check-in' })).toHaveCount(0);
   await page.getByRole('link', { name: 'Readings', exact: true }).click();
   await expect(page.getByText('Recorded · 0 saved check-ins')).toBeVisible();
