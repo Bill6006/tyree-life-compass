@@ -4,6 +4,12 @@ An installable, offline-capable personal app. Application records stay in the br
 
 Phase 1 adds phrase-based morning, afternoon, and evening check-ins, resumable local drafts, a fixed four-ingredient reading, timestamped context, and comparisons with earlier recorded phrases. Saved readings support correction, deletion, JSON/CSV export, and additive JSON restore. It contains no sample personal records, recommendations, or learned claims.
 
+Phase 2 adds optional evening notes and three-state context chips, an opt-in faith reflection, independent depth/frequency settings, quiet hours, and a low-demand override that preserves usual settings. Android alarms remain manually configured; the app neither schedules closed-PWA notifications nor escalates after silence. Draft depth stays fixed when settings change.
+
+Private items and day-level entries use separate IndexedDB tables. They are named only in the app, hidden when disabled, and excluded from ordinary exports, including the enable flag. Explicit private JSON/CSV exports and additive private restore live inside the enabled private settings. Private entries save separately as tapped, distinguish explicit absence from no entry, and do not claim effects. Disabling visibility retains entries; deleting an item removes its entries. The visibility switch is not an encryption or authentication boundary.
+
+Database version 3 preserves earlier readings and drafts. Ordinary backup version 2 accepts version 1 backups, includes evening context and optional settings, and never restores private visibility. Text fields are escaped for spreadsheet formula interpretation in CSV exports. Settings restore is separately opt-in.
+
 The score equally averages mood, energy, reversed irritation, and reversed stress. Every ingredient is required; context never substitutes for a missing answer. A local worker calculates results. Draft writes and saved-record changes are transactional, and stale drafts cannot overwrite newer records. Restore validates the entire backup before writing and keeps existing records unchanged. Versioned, allowlisted exports include unfinished work and exclude unknown future fields.
 
 ## Development

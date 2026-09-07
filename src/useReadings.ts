@@ -2,6 +2,7 @@ import { liveQuery } from 'dexie';
 import { useEffect, useState } from 'react';
 import { type CheckIn, type Draft, type Summary } from './readings';
 import { AppDatabase } from './storage';
+import { defaults, type Preferences } from './preferences';
 
 export function useRecords(database: AppDatabase) {
   const [state, setState] = useState<{ records: CheckIn[]; draft: Draft | null; loaded: boolean; error: string }>({ records: [], draft: null, loaded: false, error: '' });
@@ -12,6 +13,11 @@ export function useRecords(database: AppDatabase) {
     return () => subscription.unsubscribe();
   }, [database]);
   return state;
+}
+export function usePreferences(database: AppDatabase) {
+  const [preferences, setPreferences] = useState<Preferences>(structuredClone(defaults));
+  useEffect(() => { const sub = liveQuery(() => database.preferences.get('preferences')).subscribe({ next: (p) => setPreferences(p ?? structuredClone(defaults)), error: () => {} }); return () => sub.unsubscribe(); }, [database]);
+  return preferences;
 }
 export function useSummary(record: CheckIn | undefined, history: CheckIn[]) {
   const [state, setState] = useState<{ record: CheckIn; history: CheckIn[]; summary: Summary } | null>(null);

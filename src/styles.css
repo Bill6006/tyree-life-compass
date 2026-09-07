@@ -170,4 +170,41 @@ input::file-selector-button { color: var(--text); background: var(--surface); bo
 .file-label { display: block; margin: 1.5rem 0 .6rem; font-size: .85rem; }
 .restore-preview { margin-top: 1rem; font-size: .9rem; }
 .data-panel .message { margin-top: 1rem; }
+.quiet-cue { margin: -.5rem 0 1.2rem; }
+.mode-note { margin-bottom: 1.3rem; padding: .85rem 1rem; border-left: 2px solid var(--accent); color: var(--muted); font-size: .85rem; }
+.minimum-card, .low-demand-card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 1rem; padding: 1.3rem; margin-bottom: 1.7rem; }
+.minimum-card h2 { overflow-wrap: anywhere; margin-bottom: .6rem; }
+.low-demand-card .secondary { margin-top: .6rem; }
+.setting-options { display: grid; gap: .6rem; margin-top: 1rem; }
+.setting-option { text-align: left; color: var(--text); padding: .9rem 1rem; background: transparent; border: 1px solid var(--hairline); border-radius: .8rem; min-height: 64px; }
+.setting-option strong, .setting-option span { display: block; }
+.setting-option strong { font-size: .95rem; font-weight: 550; }
+.setting-option span { font-size: .8rem; color: var(--muted); }
+.setting-option[aria-pressed='true'] { border-color: var(--accent); background: var(--surface); }
+.setting-option:disabled[aria-pressed='true'] { opacity: .85; }
+.time-grid { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.2rem 0; }
+.time-grid label { display: grid; gap: .4rem; font-size: .8rem; color: var(--muted); flex: 1; min-width: 7.5rem; }
+.time-grid input { width: 100%; min-width: 0; }
+.alarm-plan { border-left: 2px solid var(--accent); padding-left: .9rem; margin: 1rem 0; font-size: .9rem; }
+.setting-toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; background: none; color: var(--text); border: 0; border-bottom: 1px solid var(--hairline); text-align: left; min-height: 64px; }
+.setting-toggle .secondary { display: block; font-size: .8rem; }
+.setting-toggle > span:last-child { color: var(--muted); font-size: .85rem; }
+.setting-toggle[aria-pressed='true'] > span:last-child { color: var(--accent); }
+.setting-toggle + .secondary { margin-top: .7rem; font-size: .8rem; }
+.evening-extras { margin-top: 1.3rem; padding: .3rem 0 1rem; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.evening-extras summary { min-height: 48px; padding: .7rem 0; font-size: .95rem; }
+.evening-extras input, .private-settings form input { width: 100%; }
+.evening-extras .text-button { text-align: left; overflow-wrap: anywhere; }
+.optional-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--hairline); }
+.optional-section h2 { margin-bottom: .5rem; }
+.choice-chips { margin: 1.2rem 0 1rem; border: 0; padding: 0; min-width: 0; }
+.choice-chips legend { font-size: .9rem; padding: 0; overflow-wrap: anywhere; }
+.choice-chips > div { display: flex; gap: .4rem; margin-top: .6rem; }
+.choice-chips button { flex: 1; min-height: 46px; padding: .5rem .3rem; border: 1px solid var(--hairline); border-radius: .6rem; color: var(--muted); background: var(--surface); font-size: .8rem; }
+.choice-chips button[aria-pressed='true'] { color: var(--text); border-color: var(--text); }
+.private-settings { padding-top: 1rem; }
+.private-item { margin-top: 1rem; padding-bottom: .6rem; border-bottom: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.private-item > .record-actions { margin-top: 0; }
+.check-label { display: flex; gap: .7rem; align-items: center; margin-top: 1rem; font-size: .9rem; }
+.check-label input { min-height: 24px; width: 24px; accent-color: var(--accent); }
 @media (max-width: 360px) { .reading-card { padding: 1rem; } .flow-top { flex-wrap: wrap; } }

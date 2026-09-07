@@ -68,7 +68,7 @@ test('migrates the Phase 0 database without inventing records', async () => {
     expect(await initializeStorage(db)).toBe('ready');
     expect(await db.checkIns.count()).toBe(0);
     expect(await db.drafts.count()).toBe(0);
-    expect((await db.appMeta.get('schema-version'))?.value).toBe(2);
+    expect((await db.appMeta.get('schema-version'))?.value).toBe(3);
   } finally { await db.delete(); }
 });
 test('an interrupted draft survives reopening; commit is atomic and corrections retain reporting time', async () => withDb(async (db) => {

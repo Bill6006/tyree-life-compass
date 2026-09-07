@@ -24,8 +24,8 @@ export const readingIds = Object.keys(readings) as ReadingId[];
 export const coreIds: ReadingId[] = ['mood', 'energy', 'irritation', 'stress'];
 export const definitionVersion = 1;
 export const scoreVersion = 'core-four-v1';
-export function questionsFor(block: Block): ReadingId[] {
-  return block === 'morning' ? readingIds : ['mood', 'irritation', 'energy', 'hunger', 'stress'];
+export function questionsFor(block: Block, depth: 'standard' | 'brief' = 'standard'): ReadingId[] {
+  return block === 'morning' && depth === 'standard' ? readingIds : ['mood', 'irritation', 'energy', 'hunger', 'stress'];
 }
 export function currentBlock(date = new Date()): Block {
   const hour = date.getHours();
@@ -42,16 +42,20 @@ export type CheckIn = {
   id: string; block: Block; occurredAt: string; reportedAt: string; updatedAt: string;
   answers: Answers; definitionVersion: 1; scoreVersion: typeof scoreVersion;
   answeringMs: number;
+  depth?: 'standard' | 'brief'; evening?: EveningExtras;
 };
+export type EveningExtras = { minimumWin?: string; caffeineAfterMidday?: boolean; lateDinner?: boolean; closeToGod?: boolean };
 export type Draft = {
   key: 'active'; id: string; revision: number; block: Block; occurredAt: string;
   answers: Answers; index: number; answeringMs: number;
   editingId: string | null; editingUpdatedAt: string | null;
+  depth?: 'standard' | 'brief'; evening?: EveningExtras;
 };
-export function newDraft(block: Block, record?: CheckIn): Draft {
+export function newDraft(block: Block, record?: CheckIn, depth: 'standard' | 'brief' = 'standard'): Draft {
   return { key: 'active', id: crypto.randomUUID(), revision: 0, block, occurredAt: record?.occurredAt ?? new Date().toISOString(),
     answers: record ? { ...record.answers } : {}, index: 0, answeringMs: 0,
-    editingId: record?.id ?? null, editingUpdatedAt: record?.updatedAt ?? null };
+    editingId: record?.id ?? null, editingUpdatedAt: record?.updatedAt ?? null,
+    depth: record?.depth ?? (record ? 'standard' : depth), evening: { ...record?.evening } };
 }
 
 export type Comparison = { id: ReadingId; previous: Anchor; previousAt: string; current: Anchor; delta: number };

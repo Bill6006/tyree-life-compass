@@ -3,6 +3,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 import { AppDatabase, initializeStorage, requestPersistence } from './storage';
 import { CheckIns } from './CheckIns';
 import { useRecords } from './useReadings';
+import { Settings } from './Settings';
 
 type InstallEvent = Event & {
   prompt: () => Promise<void>;
@@ -26,7 +27,7 @@ function AboutIcon() {
 }
 
 export function App() {
-  const routeFromHash = () => window.location.hash === '#/about' ? 'about' : window.location.hash === '#/readings' ? 'readings' : 'today';
+  const routeFromHash = () => window.location.hash === '#/about' ? 'about' : window.location.hash === '#/readings' ? 'readings' : window.location.hash === '#/settings' ? 'settings' : 'today';
   const [route, setRoute] = useState(routeFromHash);
   const data = useRecords(database);
   const [editing, setEditing] = useState(false);
@@ -118,7 +119,7 @@ export function App() {
       </header>
 
       <main id="main" tabIndex={-1}>
-        {route !== 'about' ? (
+        {route === 'settings' ? <Settings database={database} /> : route !== 'about' ? (
           <>
             <CheckIns database={database} {...data} journal={route === 'readings'} onEditingChange={setEditing} />
             {!editing && route === 'today' && data.records.length === 0 && <section className="install-card" aria-labelledby="install-title">
@@ -174,6 +175,7 @@ export function App() {
       <nav className="bottom-nav" aria-label="Main navigation">
         <a href="#/" aria-current={route === 'today' ? 'page' : undefined}><TodayIcon /><span>Today</span></a>
         <a href="#/readings" aria-current={route === 'readings' ? 'page' : undefined}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16H5zM9 8h6m-6 4h6m-6 4h4" /></svg><span>Readings</span></a>
+        <a href="#/settings" aria-current={route === 'settings' ? 'page' : undefined}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2"/><circle cx="15" cy="17" r="2"/></svg><span>Settings</span></a>
         <a href="#/about" aria-current={route === 'about' ? 'page' : undefined}><AboutIcon /><span>About</span></a>
       </nav>
     </div>
