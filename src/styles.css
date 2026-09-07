@@ -53,6 +53,39 @@ main:focus { outline: none; }
 .bottom-nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; color: var(--muted); font-size: .8rem; min-height: 58px; width: 7rem; border-radius: .7rem; }
 .bottom-nav a[aria-current='page'] { color: var(--accent); }
 .bottom-nav a:hover { background: var(--surface); }
+.bottom-nav { padding-inline: .6rem; gap: .2rem; }
+.bottom-nav a { font-size: .7rem; }
+.becoming-heading > p:last-child { margin-top: .75rem; }
+.protected-return { border: 1px solid var(--hairline); border-left: 2px solid var(--accent); border-radius: .9rem; padding: 1.2rem; background: var(--surface); margin-bottom: 1.8rem; }
+.protected-return h2 { font-size: 1.2rem; overflow-wrap: anywhere; }
+.return-step { font-size: 1.1rem; line-height: 1.5; margin: .85rem 0 .5rem; overflow-wrap: anywhere; }
+.return-status { margin-top: .9rem; }
+.focus-return > .record-actions { margin-block: .8rem; }
+.focus-return .record-actions .primary-button { margin-top: 0; }
+.becoming-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--hairline); }
+.becoming-section h2 { font-size: 1.35rem; margin-bottom: .75rem; }
+.direction-line { font-size: 1.3rem; line-height: 1.5; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.count-range { margin-top: 1.7rem; }
+.becoming-counts { margin: 0 0 1rem; }
+.becoming-counts > div { border-bottom: 1px solid var(--hairline); padding: .9rem 0; display: grid; gap: .25rem; }
+.becoming-counts dt { color: var(--muted); font-size: .875rem; }
+.becoming-counts dd { margin: 0; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.becoming-section > .secondary-button { margin-top: 1rem; }
+.becoming-details { border-top: 1px solid var(--hairline); margin-top: 1.5rem; font-size: .9rem; }
+.becoming-details summary { min-height: 48px; padding: .75rem 0; }
+.becoming-details > .secondary { margin: .4rem 0 1rem; }
+.becoming-records { list-style: none; padding: 0; margin: 0; }
+.becoming-records li, .commitment-row { padding: 1rem 0; border-bottom: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.becoming-records h3, .commitment-row h3 { font-size: 1rem; font-weight: 550; margin: 0 0 .5rem; }
+.becoming-records p + p, .commitment-row p + p { margin-top: .45rem; }
+.becoming-form { border: 1px solid var(--hairline); border-radius: 1rem; padding: 1.2rem; background: var(--surface); }
+.becoming-form h2 { margin-bottom: 1.2rem; }
+.becoming-form fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
+.becoming-form label:not(.check-label) { display: grid; gap: .5rem; margin-bottom: 1.25rem; color: var(--muted); font-size: .9rem; }
+.becoming-form input:not([type='checkbox']), .becoming-form select { width: 100%; min-width: 0; min-height: 48px; color: var(--text); background: var(--ground); border: 1px solid var(--hairline); border-radius: .6rem; padding: .65rem; font: inherit; font-size: 1rem; }
+.becoming-form input:focus-visible, .becoming-form select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.becoming-form .check-label { margin-bottom: 1rem; }
+@media (max-width: 360px) { .bottom-nav a { font-size: .64rem !important; } .bottom-nav { gap: .1rem; padding-inline: .4rem; } }
 .bottom-nav a { min-width: 0; }
 .mirror-heading > .secondary { margin-top: .85rem; max-width: 25rem; }
 .mirror-controls { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1rem; align-items: end; margin-bottom: 1.5rem; }

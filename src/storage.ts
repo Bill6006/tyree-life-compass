@@ -2,6 +2,7 @@ import Dexie, { type EntityTable } from 'dexie';
 import { definitionVersion, scoreVersion, type CheckIn, type Draft } from './readings';
 import { defaults, type Preferences } from './preferences';
 import type { PrivateItem, PrivateEntry } from './privateData';
+import { becomingDefaults, type BecomingProfile, type Commitment, type LifeActivity, type Sitting } from './becomingTypes';
 
 type AppMetadata = { key: string; value: number };
 export class AppDatabase extends Dexie {
@@ -11,19 +12,25 @@ export class AppDatabase extends Dexie {
   preferences!: EntityTable<Preferences, 'key'>;
   privateItems!: EntityTable<PrivateItem, 'id'>;
   privateEntries!: EntityTable<PrivateEntry, 'id'>;
+  commitments!: EntityTable<Commitment, 'id'>;
+  sittings!: EntityTable<Sitting, 'id'>;
+  lifeActivities!: EntityTable<LifeActivity, 'id'>;
+  becomingProfile!: EntityTable<BecomingProfile, 'key'>;
   constructor(name = 'tyree-life-compass') {
     super(name);
     this.version(1).stores({ appMeta: '&key' });
     this.version(2).stores({ appMeta: '&key', checkIns: '&id, occurredAt', drafts: '&key' });
     this.version(3).stores({ appMeta: '&key', checkIns: '&id, occurredAt', drafts: '&key', preferences: '&key', privateItems: '&id', privateEntries: '&id, itemId, day, &[day+itemId]' });
+    this.version(4).stores({ commitments: '&id', sittings: '&id, commitmentId, startedOn', lifeActivities: '&id, kind, day, &sittingId', becomingProfile: '&key' });
   }
 }
 export async function initializeStorage(database: AppDatabase): Promise<'ready' | 'unavailable'> {
   try {
     await database.open();
-    await database.transaction('rw', database.appMeta, database.preferences, async () => {
-      await database.appMeta.put({ key: 'schema-version', value: 3 });
+    await database.transaction('rw', database.appMeta, database.preferences, database.becomingProfile, async () => {
+      await database.appMeta.put({ key: 'schema-version', value: 4 });
       if (!await database.preferences.get('preferences')) await database.preferences.add(structuredClone(defaults));
+      if (!await database.becomingProfile.get('becoming')) await database.becomingProfile.add(structuredClone(becomingDefaults));
     });
     return 'ready';
   } catch { return 'unavailable'; }

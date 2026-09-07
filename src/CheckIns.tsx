@@ -6,6 +6,7 @@ import { RecordView } from './RecordView';
 import { DataPanel } from './DataPanel';
 import { usePreferences } from './useReadings';
 import { effectiveDepth, inQuietHours, localDay, preferredBlock } from './preferences';
+import { ProtectedReturn } from './ProtectedReturn';
 
 type Props = { database: AppDatabase; records: CheckIn[]; draft: Draft | null; loaded: boolean; error: string; journal: boolean; onEditingChange: (active: boolean) => void };
 export function CheckIns({ database, records, draft, loaded, error: storageError, journal, onEditingChange }: Props) {
@@ -54,6 +55,7 @@ export function CheckIns({ database, records, draft, loaded, error: storageError
   if (session) return <CheckInFlow key={session.id} database={database} initial={session} previousWin={previousWin} onClose={() => setSession(null)} onSaved={(record) => { setSession(null); setSelectedId(record.id); setMessage(record.reportedAt === record.updatedAt ? 'Saved on this device.' : 'Correction saved. Comparisons have been recalculated.'); window.scrollTo({ top: 0, behavior: 'instant' }); }} />;
   return <>
     <div className="page-heading"><p className="eyebrow">{journal ? 'Your words, kept here' : new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())}</p><h1>{journal ? 'Your readings' : 'Today'}</h1></div>
+    {!journal && <ProtectedReturn database={database} />}
     {(error || storageError) && <p className="message" role="alert">{error || storageError}</p>}
     {message && <p className="message" role="status">{message}</p>}
     {!journal && preferences.lowDemand && <p className="mode-note">Recover · Low-demand mode. Five readings, an evening-only plan. Skip whenever you need.</p>}
