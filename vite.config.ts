@@ -10,7 +10,7 @@ export default defineConfig(({ command }) => {
     runUrl: process.env.GITHUB_RUN_ID
       ? `https://github.com/Bill6006/tyree-life-compass/actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.env.GITHUB_RUN_ATTEMPT ?? '1'}`
       : null,
-    phase: 0,
+    phase: 1,
   };
   return {
     base: '/tyree-life-compass/',

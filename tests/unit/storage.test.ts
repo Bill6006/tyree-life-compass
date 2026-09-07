@@ -5,8 +5,9 @@ test('creates only versioned system metadata and survives reopening without pers
   const name = `compass-test-${crypto.randomUUID()}`;
   const database = new AppDatabase(name);
   expect(await initializeStorage(database)).toBe('ready');
-  expect(await database.appMeta.toArray()).toEqual([{ key: 'schema-version', value: 1 }]);
-  expect(database.tables.map((table) => table.name)).toEqual(['appMeta']);
+  expect(await database.appMeta.toArray()).toEqual([{ key: 'schema-version', value: 2 }]);
+  expect(await database.checkIns.count()).toBe(0);
+  expect(await database.drafts.count()).toBe(0);
   database.close();
   const reopened = new AppDatabase(name);
   expect(await initializeStorage(reopened)).toBe('ready');

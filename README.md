@@ -2,7 +2,9 @@
 
 An installable, offline-capable personal app. Application records stay in the browser's IndexedDB database. The public repository and GitHub Pages host contain static application code only.
 
-Phase 0 provides an empty Today screen, Android installation guidance, storage initialization, offline access, and a release evidence screen. It contains no sample personal records.
+Phase 1 adds phrase-based morning, afternoon, and evening check-ins, resumable local drafts, a fixed four-ingredient reading, timestamped context, and comparisons with earlier recorded phrases. Saved readings support correction, deletion, JSON/CSV export, and additive JSON restore. It contains no sample personal records, recommendations, or learned claims.
+
+The score equally averages mood, energy, reversed irritation, and reversed stress. Every ingredient is required; context never substitutes for a missing answer. A local worker calculates results. Draft writes and saved-record changes are transactional, and stale drafts cannot overwrite newer records. Restore validates the entire backup before writing and keeps existing records unchanged. Versioned, allowlisted exports include unfinished work and exclude unknown future fields.
 
 ## Development
 
@@ -10,10 +12,10 @@ Use Node.js 22.18 or later and npm. Install with `npm ci`, then run `npm run dev
 
 ## Verification
 
-- `npm test`: storage and deployment-integrity tests.
+- `npm test`: score direction, missingness, chronological comparisons, database migration, interrupted drafts, stale writes, correction/deletion, backup privacy/restore, and deployment-integrity tests.
 - `npm run build`: type checking, local icon generation, production build, and a SHA-256 manifest covering every deployed file except the manifest itself.
 - `npx playwright install chromium`: browser setup.
-- `npm run test:e2e`: Android-sized and desktop Chromium tests against the built directory, including offline reload, manifest/icon validation, accessibility, storage, and release identity.
+- `npm run test:e2e`: Android-sized and desktop Chromium tests against the built directory, including complete check-ins, incomplete results, offline draft recovery, correction/deletion/export/restore, accessibility, installation, and release identity. Screenshots and measured save-to-result times are attached; emulation is not a physical-phone timing guarantee.
 - `npm run verify:artifact`: ensure no built file changed after sealing and testing.
 - `npm run verify:deployed`: compare the live manifest and every served file with a locally held tested manifest.
 

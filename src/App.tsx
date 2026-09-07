@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { AppDatabase, initializeStorage, requestPersistence } from './storage';
+import { CheckIns } from './CheckIns';
+import { useRecords } from './useReadings';
 
 type InstallEvent = Event & {
   prompt: () => Promise<void>;
@@ -24,7 +26,10 @@ function AboutIcon() {
 }
 
 export function App() {
-  const [route, setRoute] = useState(window.location.hash === '#/about' ? 'about' : 'today');
+  const routeFromHash = () => window.location.hash === '#/about' ? 'about' : window.location.hash === '#/readings' ? 'readings' : 'today';
+  const [route, setRoute] = useState(routeFromHash);
+  const data = useRecords(database);
+  const [editing, setEditing] = useState(false);
   const [storage, setStorage] = useState<'checking' | 'ready' | 'unavailable'>('checking');
   const [online, setOnline] = useState(navigator.onLine);
   const [cacheReady, setCacheReady] = useState(Boolean(navigator.serviceWorker?.controller));
@@ -47,7 +52,7 @@ export function App() {
     storageReady.then((result) => { if (alive) setStorage(result); });
     navigator.storage?.persisted?.().then((result) => { if (alive) setPersisted(result); }).catch(() => {});
     const onHash = () => {
-      setRoute(window.location.hash === '#/about' ? 'about' : 'today');
+      setRoute(routeFromHash());
       window.scrollTo(0, 0);
     };
     const onNetwork = () => setOnline(navigator.onLine);
@@ -113,19 +118,10 @@ export function App() {
       </header>
 
       <main id="main" tabIndex={-1}>
-        {route === 'today' ? (
+        {route !== 'about' ? (
           <>
-            <div className="page-heading">
-              <p className="eyebrow">{new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())}</p>
-              <h1>Today</h1>
-            </div>
-            <section className="empty-reading" aria-labelledby="empty-title">
-              <div className="empty-symbol" aria-hidden="true"><span /><span /><span /></div>
-              <p className="eyebrow">Your reading</p>
-              <h2 id="empty-title">Not logged yet</h2>
-              <p>Your first check-in will appear here.</p>
-            </section>
-            <section className="install-card" aria-labelledby="install-title">
+            <CheckIns database={database} {...data} journal={route === 'readings'} onEditingChange={setEditing} />
+            {!editing && route === 'today' && data.records.length === 0 && <section className="install-card" aria-labelledby="install-title">
               <div className="section-marker" aria-hidden="true">↗</div>
               <div className="install-content">
                 <h2 id="install-title">{installed ? 'A place on your home screen' : 'Keep it on your home screen'}</h2>
@@ -136,8 +132,8 @@ export function App() {
                   <p>If you opened this inside another app, open the link in Chrome first.</p>
                 </div>}
               </div>
-            </section>
-            <p className="quiet-note">Your records stay in this browser. No account or cloud sync.</p>
+            </section>}
+            {!editing && <p className="quiet-note">Your records stay in this browser. No account or cloud sync.</p>}
           </>
         ) : (
           <>
@@ -171,12 +167,13 @@ export function App() {
             </section>
           </>
         )}
-        {needRefresh && <aside className="update-notice" role="status"><p>A new version is ready.</p><button className="text-button" onClick={() => void updateServiceWorker(true)}>Update app <Arrow /></button></aside>}
+        {needRefresh && <aside className="update-notice" role="status"><p>A new version is ready.{editing ? ' Return to Today to keep your draft before updating.' : ''}</p><button className="text-button" disabled={editing} onClick={() => void updateServiceWorker(true)}>Update app <Arrow /></button></aside>}
       </main>
 
       <footer className="app-footer"><span className="offline-status" role="status"><span className={readyOffline ? 'status-dot ready' : 'status-dot'} />{offlineLabel}</span><span>Life Compass</span></footer>
       <nav className="bottom-nav" aria-label="Main navigation">
         <a href="#/" aria-current={route === 'today' ? 'page' : undefined}><TodayIcon /><span>Today</span></a>
+        <a href="#/readings" aria-current={route === 'readings' ? 'page' : undefined}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16H5zM9 8h6m-6 4h6m-6 4h4" /></svg><span>Readings</span></a>
         <a href="#/about" aria-current={route === 'about' ? 'page' : undefined}><AboutIcon /><span>About</span></a>
       </nav>
     </div>
