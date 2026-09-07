@@ -6,6 +6,10 @@ Phase 1 adds phrase-based morning, afternoon, and evening check-ins, resumable l
 
 Phase 2 adds optional evening notes and three-state context chips, an opt-in faith reflection, independent depth/frequency settings, quiet hours, and a low-demand override that preserves usual settings. Android alarms remain manually configured; the app neither schedules closed-PWA notifications nor escalates after silence. Draft depth stays fixed when settings change.
 
+Phase 3 adds the Mirror: today and seven-day traces for the fixed score or any reading, a 28-day heatmap of complete-score daily means with source counts, and user-selected paired-reading descriptions. Gaps and incomplete records remain distinct; chart records expose exact phrases and timestamps. Local calendar dates use occurrence time. Context charts preserve original phrase order, including sleep ranges. No action markers appear without real action records.
+
+Mirror calculations run in a separate local worker using only reading fields. Spearman association uses within-pair average ranks for tied phrases, same-check-in complete pairs, an optional block filter, and a fixed 28-date window. Three pairs are a display minimum, not an evidence threshold; constant inputs have no numeric association. Counts and limitations stay visible. There are no significance, causal, prediction, or personal-benefit claims. See [R’s correlation documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html) for the descriptive method. Derived views are not stored and rebuild after correction or deletion; private tables and evening extras do not enter the Mirror.
+
 Private items and day-level entries use separate IndexedDB tables. They are named only in the app, hidden when disabled, and excluded from ordinary exports, including the enable flag. Explicit private JSON/CSV exports and additive private restore live inside the enabled private settings. Private entries save separately as tapped, distinguish explicit absence from no entry, and do not claim effects. Disabling visibility retains entries; deleting an item removes its entries. The visibility switch is not an encryption or authentication boundary.
 
 Database version 3 preserves earlier readings and drafts. Ordinary backup version 2 accepts version 1 backups, includes evening context and optional settings, and never restores private visibility. Text fields are escaped for spreadsheet formula interpretation in CSV exports. Settings restore is separately opt-in.
@@ -29,6 +33,6 @@ The Pages workflow builds once, tests the compiled directory, uploads it, and de
 
 ## Device boundaries
 
-No accounts, telemetry, cloud synchronization, or personal API calls. External build-evidence links open only when selected. Service workers cache static application assets. Browser-managed storage can be erased; persistent storage is requested only through the About control and may be declined by the browser. A closed PWA does not guarantee scheduled local notifications; Android alarms provide reminders.
+No accounts, telemetry, cloud synchronization, or personal API calls. External build-evidence and method-reference links open only when selected. Service workers cache static application assets. Browser-managed storage can be erased; persistent storage is requested only through the About control and may be declined by the browser. A closed PWA does not guarantee scheduled local notifications; Android alarms provide reminders.
 
 Source is public. Private planning instructions, phase state, exports, and backups are excluded from Git and deployment.
